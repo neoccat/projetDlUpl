@@ -1,0 +1,4 @@
+127.0.0.1 - - [14/Dec/2022:11:48:28 +0100] "GET / HTTP/1.1" 404 - http-bio-8080-exec-1 0
+127.0.0.1 - - [14/Dec/2022:11:48:33 +0100] "GET /projetDlUpl/ HTTP/1.1" 200 52 http-bio-8080-exec-2 283
+127.0.0.1 - - [14/Dec/2022:11:49:01 +0100] "GET /projetDlUpl/login.jsp HTTP/1.1" 200 1390 http-bio-8080-exec-3 41
+127.0.0.1 - - [14/Dec/2022:11:49:09 +0100] "POST /projetDlUpl/Authent HTTP/1.1" 200 - http-bio-8080-exec-4 222
