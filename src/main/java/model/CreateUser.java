@@ -1,15 +1,11 @@
 package model;
 
+import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -17,47 +13,48 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
- @WebServlet("/Authent")
-public class Authent extends HttpServlet {
-
+@WebServlet("/CreateUser")
+public class CreateUser extends HttpServlet {
+	
 	private final static String url = "jdbc:postgresql://localhost/dluplproject";
 	private final static String dbLogin = "postgres";
 	private final static String dbPassword = "postgres";
 	private static Connection con;
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		String login = req.getParameter("login");
+		String password = req.getParameter("password");
+		RequestDispatcher rd;
+		
 		try {
 			Class.forName("org.postgresql.Driver");
 			con = DriverManager.getConnection(url, dbLogin, dbPassword);
-
-			String login = req.getParameter("login");
-			String password = req.getParameter("password");
 			
-			RequestDispatcher rd;
-
-			PreparedStatement stmt = con.prepareStatement("SELECT * FROM users WHERE login= ?");
-			stmt.setString(1, login);
-			System.out.println("[DEBUG] " + stmt);
-			ResultSet rs = stmt.executeQuery();
-			try {
-				rs.next();
-				if(password.equals(rs.getObject("password"))) {
-					HttpSession session = req.getSession();
-					session.setAttribute("user", login);
-					resp.sendRedirect("files.jsp");
-				} else {
-					resp.sendRedirect("login.jsp?error=error");
-				}
-			} catch(Exception e) {
-				e.printStackTrace();
-				resp.sendRedirect("login.jsp?error=error");
+			File f = new File("src/main/webapp/users_Files");
+			for(File file : f.listFiles()) {
+				if(file.getName().equals(login))
+					throw new Exception();
 			}
 			
-		} catch (SQLException | ClassNotFoundException e) {
+			PreparedStatement stmt = con.prepareStatement("INSERT INTO users (login, password) values (?, ?)");
+			stmt.setString(1, login);
+			stmt.setString(2, password);
+			
+			System.out.println("[LOG] " + stmt);
+			stmt.execute();
+			
+			File dir = new File("src/main/webapp/users_Files/" + login);
+			dir.mkdir();
+			
+			rd = req.getRequestDispatcher("login.jsp?info=created");
+			rd.forward(req, resp);
+		} catch (Exception e) {
 			e.printStackTrace();
+			rd = req.getRequestDispatcher("login.jsp?error=error2");
+			rd.forward(req, resp);
 		} finally {
 			try {
 				con.close();
@@ -65,7 +62,5 @@ public class Authent extends HttpServlet {
 				e.printStackTrace();
 			}
 		}
-
 	}
-
 }

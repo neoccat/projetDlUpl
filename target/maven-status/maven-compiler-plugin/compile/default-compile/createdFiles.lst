@@ -1,3 +1,4 @@
-model/User.class
-model/IsAuthent.class
-model/Authent.class
+model\Logout.class
+model\IsAuthent.class
+model\Authent.class
+model\User.class

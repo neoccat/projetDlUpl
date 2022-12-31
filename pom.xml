@@ -25,18 +25,19 @@
 	    <version>4.0.1</version>
 	    <scope>provided</scope>
 	</dependency>
-	<dependency>
-	    <groupId>javax.servlet.jsp</groupId>
-	    <artifactId>jsp-api</artifactId>
-	    <version>2.1</version>
-	    <scope>provided</scope>
-	</dependency>
 	<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
 	<dependency>
 	    <groupId>org.postgresql</groupId>
 	    <artifactId>postgresql</artifactId>
 	    <version>42.5.0</version>
 	</dependency>
+	<!-- https://mvnrepository.com/artifact/servlets.com/cos -->
+	<dependency>
+	    <groupId>servlets.com</groupId>
+	    <artifactId>cos</artifactId>
+	    <version>05Nov2002</version>
+	</dependency>
+
 	
   </dependencies>
   <build>
